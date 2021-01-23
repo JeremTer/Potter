@@ -2,32 +2,56 @@ package fr.esgi.potter;
 
 import fr.esgi.potter.book.Book;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class Basket {
 
-    private List<Book> books;
-    private Double price = 0.0;
+    private final List<Book> singleBooks;
+    private final List<Book> duplicateBooks;
+
+    private Double price;
+
+    public Basket() {
+        singleBooks = new ArrayList<>();
+        duplicateBooks = new ArrayList<>();
+        price = 0.0;
+    }
 
     public List<Book> getBooks() {
-        return books;
+        List<Book> allBooks = new ArrayList<>();
+        allBooks.addAll(singleBooks);
+        allBooks.addAll(duplicateBooks);
+        return allBooks;
     }
 
     public void setBooks(List<Book> books) {
-        this.books = books;
+        for (Book book : books) {
+            addBook(book);
+        }
     }
 
-    public void addProduct(Book book) {
-        this.books.add(book);
+    public void addBook(Book book) {
+        if (singleBooks.contains(book)) {
+            duplicateBooks.add(book);
+        } else {
+            singleBooks.add(book);
+        }
+    }
+
+    private void calculateSingleBooksPrice() {
+        for (Book book : singleBooks) {
+            this.price += book.getPrice();
+        }
+        if (singleBooks.size() > 1) {
+            this.price -= this.price * getDiscount() / 100;
+        }
     }
 
     public void calculatePrice() {
-        for (Book book : books) {
+        calculateSingleBooksPrice();
+        for (Book book : duplicateBooks) {
             this.price += book.getPrice();
-        }
-        if (books.size() > 1) {
-            this.price -= this.price * discount() / 100;
         }
     }
 
@@ -35,29 +59,18 @@ public class Basket {
         return price;
     }
 
-    public Integer discount() {
-        if (books.size() == 2) {
+    public Integer getDiscount() {
+        if (singleBooks.size() == 2) {
             return 5;
-        } else if (books.size() == 3) {
+        } else if (singleBooks.size() == 3) {
             return 10;
-        } else if (books.size() == 4) {
+        } else if (singleBooks.size() == 4) {
             return 20;
-        } else if (books.size() == 5) {
+        } else if (singleBooks.size() == 5) {
             return 25;
         }
         return 1;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Basket basket = (Basket) o;
-        return Objects.equals(books, basket.books) && Objects.equals(price, basket.price);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(books, price);
-    }
+    
 }

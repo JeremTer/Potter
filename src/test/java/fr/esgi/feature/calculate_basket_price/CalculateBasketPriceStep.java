@@ -7,7 +7,9 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.junit.jupiter.api.Assertions;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class CalculateBasketPriceStep {
@@ -20,10 +22,16 @@ public class CalculateBasketPriceStep {
 
     @Given("^My basket contains the books$")
     public void myBasketContainsTheBooks(List<String> bookTitles) {
-        final List<Book> books = potter.books()
-                .stream()
-                .filter(book -> bookTitles.contains(book.getTitle()))
-                .collect(Collectors.toList());
+        Map<String, Book> bookMap = potter.books().stream()
+                .collect(Collectors.toMap(Book::getTitle, book -> book));
+
+        final List<Book> books = new ArrayList<>();
+
+        for (String bookTitle : bookTitles) {
+            if (bookMap.containsKey(bookTitle)) {
+                books.add(bookMap.get(bookTitle));
+            }
+        }
 
         potter.basket().setBooks(books);
     }
