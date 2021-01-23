@@ -8,7 +8,7 @@ import java.util.Objects;
 public class Basket {
 
     private List<Book> books;
-    private Double price;
+    private Double price = 0.0;
 
     public List<Book> getBooks() {
         return books;
@@ -23,15 +23,29 @@ public class Basket {
     }
 
     public void calculatePrice() {
-        this.price = 8.0;
+        for (Book book : books) {
+            this.price += book.getPrice();
+        }
+        if (books.size() > 1) {
+            this.price -= this.price * discount() / 100;
+        }
     }
 
     public Double getPrice() {
         return price;
     }
 
-    public Double getDiscount() {
-        return 0.0;
+    public Integer discount() {
+        if (books.size() == 2) {
+            return 5;
+        } else if (books.size() == 3) {
+            return 10;
+        } else if (books.size() == 4) {
+            return 20;
+        } else if (books.size() == 5) {
+            return 25;
+        }
+        return 1;
     }
 
     @Override

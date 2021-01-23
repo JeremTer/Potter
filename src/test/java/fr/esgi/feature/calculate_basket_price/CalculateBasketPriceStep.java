@@ -18,7 +18,7 @@ public class CalculateBasketPriceStep {
         this.potter = potter;
     }
 
-    @Given("My basket contains the books$")
+    @Given("^My basket contains the books$")
     public void myBasketContainsTheBooks(List<String> bookTitles) {
         final List<Book> books = potter.books()
                 .stream()
