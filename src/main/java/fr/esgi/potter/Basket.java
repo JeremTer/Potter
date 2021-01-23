@@ -8,6 +8,7 @@ import java.util.Objects;
 public class Basket {
 
     private List<Book> books;
+    private Double price;
 
     public List<Book> getBooks() {
         return books;
@@ -21,8 +22,12 @@ public class Basket {
         this.books.add(book);
     }
 
-    public Double calculatePrice() {
-        return 0.0;
+    public void calculatePrice() {
+        this.price = 8.0;
+    }
+
+    public Double getPrice() {
+        return price;
     }
 
     public Double getDiscount() {
@@ -34,11 +39,11 @@ public class Basket {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Basket basket = (Basket) o;
-        return Objects.equals(books, basket.books);
+        return Objects.equals(books, basket.books) && Objects.equals(price, basket.price);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(books);
+        return Objects.hash(books, price);
     }
 }

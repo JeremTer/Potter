@@ -21,6 +21,10 @@ public class Potter {
         return books;
     }
 
+    public void addBook(Book book) {
+        this.books.add(book);
+    }
+
     public void setBooks(List<Book> books) {
         this.books = books;
     }

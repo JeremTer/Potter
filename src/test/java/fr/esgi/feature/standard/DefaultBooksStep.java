@@ -40,12 +40,12 @@ public class DefaultBooksStep {
         books.add(new Book("Harry Potter and The Prisoner of Azkaban", 8));
         books.add(new Book("Harry Potter and The Goblet of Fire", 8));
         books.add(new Book("Harry Potter and The Order of the Phoenix", 8));
-        potter.basket().setBooks(books);
+        potter.setBooks(books);
     }
 
     @Then("the available books should be at least:$")
     public void theAvailablePropertiesShouldBeAtLeast(List<Book> books) {
-        Assertions.assertThat(potter.basket().getBooks()).containsAll(books);
+        Assertions.assertThat(potter.books()).containsAll(books);
     }
 
     @DataTableType
